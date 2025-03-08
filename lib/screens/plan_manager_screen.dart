@@ -15,7 +15,7 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
 
   void addPlan(String name, String description, DateTime date) {
     setState(() {
-      plans.add(Plan(name: name, description: description));
+      plans.add(Plan(name: name, description: description, date: date));
     });
   }
 
