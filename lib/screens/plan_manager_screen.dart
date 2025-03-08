@@ -22,14 +22,41 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
     });
   }
 
+  void completePlan(int index) {
+    setState(() {
+      plans[index].isCompleted = !plans[index].isCompleted;
+    });
+  }
+
+  void removePlan(int index) {
+    setState(() {
+      plans.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Adoption and Travel Plans'),
       ),
-      body: Center(
-        child: Text('Example of plans'),
+      body: ListView.builder(
+        itemCount: plans.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(plans[index].name),
+            subtitle: Text(plans[index].description),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                removePlan(index);
+              },
+            ),
+            onTap: () {
+              completePlan(index);
+            },
+          );
+        },
       ),
     );
   }
