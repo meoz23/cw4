@@ -44,7 +44,14 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
         itemCount: plans.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(plans[index].name),
+            title: Text(
+              plans[index].name,
+              style: TextStyle(
+                decoration: plans[index].isCompleted
+                    ? TextDecoration.lineThrough
+                    : null,
+              ),
+            ),
             subtitle: Text(plans[index].description),
             trailing: IconButton(
               icon: Icon(Icons.delete),
@@ -55,8 +62,15 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
             onTap: () {
               completePlan(index);
             },
+            onLongPress: () {
+            },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
