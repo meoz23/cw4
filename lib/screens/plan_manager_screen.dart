@@ -9,6 +9,12 @@ class PlanManagerScreen extends StatefulWidget {
 class _PlanManagerScreenState extends State<PlanManagerScreen> {
   List<Plan> plans = [];
 
+  void addPlan(String name, String description) {
+    setState(() {
+      plans.add(Plan(name: name, description: description));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
