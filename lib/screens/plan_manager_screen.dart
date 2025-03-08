@@ -9,17 +9,73 @@ class PlanManagerScreen extends StatefulWidget {
 class _PlanManagerScreenState extends State<PlanManagerScreen> {
   List<Plan> plans = [];
 
-  void addPlan(String name, String description) {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
+
+  void addPlan(String name, String description, DateTime date) {
     setState(() {
       plans.add(Plan(name: name, description: description));
     });
   }
 
-  void updatePlan(int index, String newName, String newDescription) {
-    setState(() {
-      plans[index].name = newName;
-      plans[index].description = newDescription;
-    });
+  void _showCreatePlanDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Create New Plan'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: 'Plan Name'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+              ),
+              ListTile(
+                title: Text('Date: ${selectedDate.toLocal()}'),
+                trailing: Icon(Icons.calendar_today),
+                onTap: () async {
+                  DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101),
+                  );
+                  if (picked != null && picked != selectedDate)
+                    setState(() {
+                      selectedDate = picked;
+                    });
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                addPlan(
+                  nameController.text,
+                  descriptionController.text,
+                  selectedDate,
+                );
+                Navigator.of(context).pop();
+              },
+              child: Text('Save'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void completePlan(int index) {
@@ -62,14 +118,11 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
             onTap: () {
               completePlan(index);
             },
-            onLongPress: () {
-            },
           );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-        },
+        onPressed: _showCreatePlanDialog,
         child: Icon(Icons.add),
       ),
     );
