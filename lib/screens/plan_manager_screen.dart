@@ -84,6 +84,69 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
     });
   }
 
+  void editPlan(int index) {
+    nameController.text = plans[index].name;
+    descriptionController.text = plans[index].description;
+    selectedDate = DateTime.now();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Plan'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(labelText: 'Plan Name'),
+              ),
+              TextField(
+                controller: descriptionController,
+                decoration: InputDecoration(labelText: 'Description'),
+              ),
+              ListTile(
+                title: Text('Date: ${selectedDate.toLocal()}'),
+                trailing: Icon(Icons.calendar_today),
+                onTap: () async {
+                  DateTime? picked = await showDatePicker(
+                    context: context,
+                    initialDate: selectedDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101),
+                  );
+                  if (picked != null && picked != selectedDate)
+                    setState(() {
+                      selectedDate = picked;
+                    });
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  plans[index].name = nameController.text;
+                  plans[index].description = descriptionController.text;
+                  plans[index].date = selectedDate;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('Save'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void removePlan(int index) {
     setState(() {
       plans.removeAt(index);
@@ -117,6 +180,9 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
             ),
             onTap: () {
               completePlan(index);
+            },
+            onLongPress: () {
+              editPlan(index);
             },
           );
         },
