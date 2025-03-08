@@ -15,6 +15,13 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
     });
   }
 
+  void updatePlan(int index, String newName, String newDescription) {
+    setState(() {
+      plans[index].name = newName;
+      plans[index].description = newDescription;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
