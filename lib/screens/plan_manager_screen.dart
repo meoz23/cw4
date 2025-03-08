@@ -162,28 +162,33 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
       body: ListView.builder(
         itemCount: plans.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              plans[index].name,
-              style: TextStyle(
-                decoration: plans[index].isCompleted
-                    ? TextDecoration.lineThrough
-                    : null,
+          return GestureDetector(
+            onDoubleTap: () {
+              removePlan(index);
+            },
+            child: ListTile(
+              title: Text(
+                plans[index].name,
+                style: TextStyle(
+                  decoration: plans[index].isCompleted
+                      ? TextDecoration.lineThrough
+                      : null,
+                ),
               ),
-            ),
-            subtitle: Text(plans[index].description),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                removePlan(index);
+              subtitle: Text(plans[index].description),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  removePlan(index);
+                },
+              ),
+              onTap: () {
+                completePlan(index);
+              },
+              onLongPress: () {
+                editPlan(index);
               },
             ),
-            onTap: () {
-              completePlan(index);
-            },
-            onLongPress: () {
-              editPlan(index);
-            },
           );
         },
       ),
