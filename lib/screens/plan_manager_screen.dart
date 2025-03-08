@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import '../models/plan.dart';
 
 class PlanManagerScreen extends StatefulWidget {
+  const PlanManagerScreen({super.key});
+
   @override
-  _PlanManagerScreenState createState() => _PlanManagerScreenState();
+  PlanManagerScreenState createState() => PlanManagerScreenState();
 }
 
-class _PlanManagerScreenState extends State<PlanManagerScreen> {
+class PlanManagerScreenState extends State<PlanManagerScreen> {
   List<Plan> plans = [];
 
   final TextEditingController nameController = TextEditingController();
@@ -46,10 +48,11 @@ class _PlanManagerScreenState extends State<PlanManagerScreen> {
                     firstDate: DateTime(2000),
                     lastDate: DateTime(2101),
                   );
-                  if (picked != null && picked != selectedDate)
+                  if (picked != null && picked != selectedDate) {
                     setState(() {
                       selectedDate = picked;
                     });
+                  }
                 },
               ),
             ],
